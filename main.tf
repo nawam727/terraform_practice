@@ -1,25 +1,30 @@
-#Block
-block_type {
-    attribute1 = value1
-    attribute2 = value2
+resource "aws_s3_bucket" "myTerraform724" {
+  bucket = var.bucketname
 }
 
-resource "aws_instance" "example" {
-  ami = "ami-0c94855ba95c71c99"
-  instance_type = "t2.micro"
-  count = 3
-  enabled = true
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.myTerraform724.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
 }
 
-#Attributes
-key = value
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.myTerraform724.id
 
-#Datatypes
-"string"
-number 2
-boolean true false
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
 
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.example,
+    aws_s3_bucket_public_access_block.example,
+  ]
 
-List
-list = ["item1", "item2", "item3"]
-
+  bucket = aws_s3_bucket.myTerraform724.id
+  acl    = "public-read"
+}

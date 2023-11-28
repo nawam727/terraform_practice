@@ -1,0 +1,17 @@
+# .gitignore for Terraform
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# Ignore .terraform directory
+.terraform/
+
+# Ignore any large files or directories
+*.tar
+*.zip
+*.gz
+*.rar
+*.bin
+*.exe
